@@ -396,3 +396,15 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+/.idea/.idea.CZ.Saga/.idea/.gitignore
+/.idea/.idea.CZ.Saga/.idea/.name
+/.idea/.idea.CZ.Saga/.idea/encodings.xml
+/.idea/.idea.CZ.Saga/.idea/indexLayout.xml
+/.idea/.idea.CZ.Saga/.idea/vcs.xml
+/.idea/.idea.Saga.dir/.idea/.gitignore
+/.idea/.idea.Saga.dir/.idea/encodings.xml
+/.idea/.idea.Saga.dir/.idea/indexLayout.xml
+/.idea/.idea.Saga.dir/.idea/vcs.xml
+/src/Orders/Properties/launchSettings.json
+/.idea/
