@@ -1,3 +1,8 @@
+using MassTransit;
+using Orders.Consumers;
+using Orders.KafkaConsumer;
+using Orders.Models;
+
 namespace Orders;
 
 public class Program
@@ -6,15 +11,69 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        var app = builder.Build();
 
+        builder.Services.AddMassTransit(x =>
+        {
+            x.AddSagaStateMachine<OrderStateMachine, OrderState>()
+                .MongoDbRepository(r =>
+                {
+                    r.Connection =
+                        "mongodb://user:password@localhost:27017";
+                    r.DatabaseName = "order_saga_db";
+                });
+
+            x.AddConsumer<InventoryAllocationConsumer>();
+            x.AddConsumer<PaymentConsumer>();
+            x.AddConsumer<OrderAcceptedConsumer>();
+            x.AddConsumer<OrderRejectedConsumer>();
+
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("localhost", "/", h =>
+                {
+                    h.Username("user");
+                    h.Password("password");
+                });
+
+                cfg.ReceiveEndpoint("order_saga_queue", e => { e.ConfigureSaga<OrderState>(context); });
+
+                cfg.ReceiveEndpoint("inventory_service_queue",
+                    e => { e.ConfigureConsumer<InventoryAllocationConsumer>(context); });
+
+                cfg.ReceiveEndpoint("payment_service_queue", e => { e.ConfigureConsumer<PaymentConsumer>(context); });
+
+                cfg.ReceiveEndpoint("order_accepted_queue",
+                    e => { e.ConfigureConsumer<OrderAcceptedConsumer>(context); });
+
+                cfg.ReceiveEndpoint("order_rejected_queue",
+                    e => { e.ConfigureConsumer<OrderRejectedConsumer>(context); });
+            });
+
+            x.AddRider(rider =>
+            {
+                rider.AddConsumer<KafkaOrderEventConsumer>();
+
+                rider.UsingKafka((context, k) =>
+                {
+                    k.Host("host.docker.internal:9092");
+
+                    // await kafkaTopicInitializer.CreateTopicAsync("your-topic-name", numPartitions: 3, replicationFactor: 1);
+
+
+                    k.TopicEndpoint<KafkaOrderEvent>("order-topic1", "order-group",
+                        e => { e.ConfigureConsumer<KafkaOrderEventConsumer>(context); });
+                });
+            });
+        });
+
+        // builder.Services.AddMassTransitHostedService();
+        // builder.Services.AddMassTransitHostedService();
+        var app = builder.Build();
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {

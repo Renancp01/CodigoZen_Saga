@@ -13,14 +13,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7ac9bff-ea65-4d5d-a698-f601847ff033" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Saga.dir/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Orders/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Consumers/InventoryAllocationConsumer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Consumers/OrderAcceptedConsumer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Consumers/OrderRejectedConsumer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Consumers/PaymentConsumer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Inventory/InventoryAllocationConfirmed.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Inventory/InventoryAllocationFailed.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Inventory/InventoryAllocationRequested.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Order/CheckOrderStatus.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Order/OrderAccepted.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Order/OrderRejected.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Order/OrderStatusResult.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Order/OrderSubmitted.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Payment/PaymentProcessed.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Contracts/Payment/ProcessPayment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Controllers/OrderController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/KafkaConsumer/KafkaOrderEventConsumer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Machine/OrderStateMachine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Models/KafkaOrderEvent.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Models/OrderRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Orders/Models/OrderState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CZ.Saga/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Saga.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Saga.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Orders/Orders.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/Orders/Orders.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Orders/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Orders/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,25 +52,41 @@
     <option name="autoShow" value="false" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Renancp01"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Renancp01&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Renancp01/CodigoZen_Saga.git",
-    "accountId": "c8a873fd-559d-45de-b609-84b7c6b748a3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Renancp01/CodigoZen_Saga.git&quot;,
+    &quot;accountId&quot;: &quot;c8a873fd-559d-45de-b609-84b7c6b748a3&quot;
   }
-}]]></component>
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ff3be11f0cf2418d91b4ac201e5780b7416200/73/39c9e9af/MassTransitStateMachine`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2e49d132ea68ff47071c64476ae29138fa965dc555ef7c3f4991586431de241/Task.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/595e4f2361fd31cb66c7e9303f46cf8f2fe77d96eea9d0e42c17cae783aa74/ServiceCollection.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/69907bf01bb77d502ce229405a4952cf3c3e33e2d368240ee16243719dbee/ActionActivity.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/861237da58173c1a1ecd14ceadba372801c9bc8c4be4042c7ae8634b5e755f9/State.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b47317af1f57473b8219c834cb9f923e6f75aff79b8a65e6fa4fee618eb3eb/ScopeConsumerFactory.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2o8eQlZbqRW2HmOKCrKwAGXK2Ub" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -63,7 +95,8 @@
   "keyToString": {
     ".NET Launch Settings Profile.Orders: https.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "XThreadsFramesViewSplitterKey": "0.46666667",
+    "git-widget-placeholder": "feat/provisioning",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -72,6 +105,9 @@
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory"
+    ],
     "rider.external.source.directories": [
       "C:\\Users\\renan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
       "C:\\Users\\renan\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
@@ -135,7 +171,17 @@
       <option name="presentableId" value="Default" />
       <updated>1730255616036</updated>
       <workItem from="1730255617301" duration="496000" />
+      <workItem from="1730256167897" duration="10000000" />
     </task>
+    <task id="LOCAL-00001" summary="[feat] - provisioning project Orders">
+      <option name="closed" value="true" />
+      <created>1730256271065</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730256271065</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,6 +203,39 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="[feat] - provisioning project Orders" />
+    <option name="LAST_COMMIT_MESSAGE" value="[feat] - provisioning project Orders" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/src/Orders/Consumers/OrderRejectedConsumer.cs</url>
+          <line>8</line>
+          <properties documentPath="D:\Github\CodigoZen\Saga\src\Orders\Consumers\OrderRejectedConsumer.cs" containingFunctionPresentation="Method 'Consume'">
+            <startOffsets>
+              <option value="216" />
+            </startOffsets>
+            <endOffsets>
+              <option value="217" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/src/Orders/KafkaConsumer/KafkaOrderEventConsumer.cs</url>
+          <line>14</line>
+          <properties documentPath="D:\Github\CodigoZen\Saga\src\Orders\KafkaConsumer\KafkaOrderEventConsumer.cs" containingFunctionPresentation="Method 'Consume'">
+            <startOffsets>
+              <option value="427" />
+            </startOffsets>
+            <endOffsets>
+              <option value="428" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
