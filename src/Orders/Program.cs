@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using MassTransit;
 using Orders.Consumers;
 using Orders.KafkaConsumer;
@@ -60,13 +61,15 @@ public class Program
 
                 rider.UsingKafka((context, k) =>
                 {
-                    k.Host("host.docker.internal:9092");
-
-                    // await kafkaTopicInitializer.CreateTopicAsync("your-topic-name", numPartitions: 3, replicationFactor: 1);
-
-
+                    k.Host("192.168.1.12:9092", _ => { });
+                    
+                    k.SecurityProtocol = SecurityProtocol.Plaintext;
                     k.TopicEndpoint<KafkaOrderEvent>("order-topic1", "order-group",
-                        e => { e.ConfigureConsumer<KafkaOrderEventConsumer>(context); });
+                        e =>
+                        {
+                            e.CreateIfMissing();
+                            e.ConfigureConsumer<KafkaOrderEventConsumer>(context);
+                        });
                 });
             });
         });
