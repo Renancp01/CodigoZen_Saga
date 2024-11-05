@@ -24,16 +24,19 @@ services:
       - '9092:9092'
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: bitnami/rabbitmq:latest
     container_name: rabbitmq
+    environment:
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_ERLANG_COOKIE=secret_cookie
+      - RABBITMQ_PLUGINS=rabbitmq_management,rabbitmq_shovel,rabbitmq_shovel_management
+      - RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true
     ports:
       - '5672:5672'
-      - '15672:15672'
-    environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      - '15672:15672' # Porta da interface de gerenciamento
     volumes:
-      - ./rabbitmq_data:/var/lib/rabbitmq
+    - ./rabbitmq_data:/bitnami/rabbitmq
 
   kafdrop:
     image: obsidiandynamics/kafdrop

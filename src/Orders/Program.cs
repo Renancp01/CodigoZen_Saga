@@ -2,6 +2,7 @@ using Confluent.Kafka;
 using MassTransit;
 using Orders.Consumers;
 using Orders.KafkaConsumer;
+using Orders.Machine;
 using Orders.Models;
 
 namespace Orders;
@@ -28,7 +29,10 @@ public class Program
                     r.DatabaseName = "order_saga_db";
                 });
 
-            x.AddConsumer<InventoryAllocationConsumer>();
+            x.AddConsumer<InventoryAllocationConsumer>(c =>
+            {
+                c.UseMessageRetry(retryConfigurator => { retryConfigurator.Interval(3, 1000); });
+            });
             x.AddConsumer<PaymentConsumer>();
             x.AddConsumer<OrderAcceptedConsumer>();
             x.AddConsumer<OrderRejectedConsumer>();
@@ -64,18 +68,17 @@ public class Program
                     k.Host("192.168.1.12:9092", _ => { });
                     
                     k.SecurityProtocol = SecurityProtocol.Plaintext;
-                    k.TopicEndpoint<KafkaOrderEvent>("order-topic1", "order-group",
+                    k.TopicEndpoint<KafkaOrderEvent>("create-order", "order-group",
                         e =>
                         {
+                            e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing();
                             e.ConfigureConsumer<KafkaOrderEventConsumer>(context);
                         });
                 });
             });
         });
-
-        // builder.Services.AddMassTransitHostedService();
-        // builder.Services.AddMassTransitHostedService();
+        
         var app = builder.Build();
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

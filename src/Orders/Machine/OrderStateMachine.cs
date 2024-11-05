@@ -4,7 +4,10 @@ using MassTransit;
 using Orders.Contracts.Inventory;
 using Orders.Contracts.Order;
 using Orders.Contracts.Payment;
+using Orders.Machine.States;
 using Orders.Models;
+
+namespace Orders.Machine;
 
 public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
@@ -90,8 +93,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     // public State PaymentProcessing { get; private set; }
     public State PaymentProcessing { get; private set; }
     public State Completed { get; private set; }
-
-
+    
     public Event<OrderSubmitted> OrderSubmittedEvent { get; private set; }
     public Event<InventoryAllocationConfirmed> InventoryAllocationConfirmedEvent { get; private set; }
     public Event<InventoryAllocationFailed> InventoryAllocationFailedEvent { get; private set; }

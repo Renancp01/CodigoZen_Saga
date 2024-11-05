@@ -8,7 +8,7 @@ public class OrderState : SagaStateMachineInstance, ISagaVersion
     [BsonId]
     public Guid CorrelationId { get; set; }
 
-    public string CurrentState { get; set; }
+    public string CurrentState { get; set; } = "Initial";
 
     public string CustomerNumber { get; set; }
     
