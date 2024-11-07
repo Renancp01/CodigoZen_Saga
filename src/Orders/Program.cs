@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using MassTransit;
+using MongoDB.Driver;
 using Orders.Consumers;
 using Orders.KafkaConsumer;
 using Orders.Machine;
@@ -33,17 +34,14 @@ public class Program
             {
                 c.UseMessageRetry(retryConfigurator => { retryConfigurator.Interval(3, 1000); });
             });
+
             x.AddConsumer<PaymentConsumer>();
             x.AddConsumer<OrderAcceptedConsumer>();
             x.AddConsumer<OrderRejectedConsumer>();
 
             x.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("localhost", "/", h =>
-                {
-                    h.Username("user");
-                    h.Password("password");
-                });
+                cfg.Host("amqp://user:password@localhost:5672/");
 
                 cfg.ReceiveEndpoint("order_saga_queue", e => { e.ConfigureSaga<OrderState>(context); });
 
@@ -61,16 +59,31 @@ public class Program
 
             x.AddRider(rider =>
             {
-                rider.AddConsumer<KafkaOrderEventConsumer>();
+                x.AddConsumer<KafkaOrderEventConsumer>(config =>
+                {
+                    config.UseMessageRetry(r =>
+                    {
+                        r.Interval(3, TimeSpan.FromSeconds(5)); // 3 tentativas com intervalo de 5 segundos entre elas
+                    });
+                });
 
                 rider.UsingKafka((context, k) =>
                 {
                     k.Host("192.168.1.12:9092", _ => { });
-                    
+
                     k.SecurityProtocol = SecurityProtocol.Plaintext;
                     k.TopicEndpoint<KafkaOrderEvent>("create-order", "order-group",
                         e =>
                         {
+                            // Obtém o IMongoClient do contexto de dependências
+                            var mongoClient = context.GetRequiredService<IMongoClient>();
+
+                            // Cria a instância do filtro
+                            var inboxFilter = new MongoDbInboxFilter(mongoClient, "inbox_database", "inbox_state");
+                            // e.UseConsumeFilter(inboxFilter, context);
+
+                            
+                            
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing();
                             e.ConfigureConsumer<KafkaOrderEventConsumer>(context);
@@ -78,9 +91,8 @@ public class Program
                 });
             });
         });
-        
+
         var app = builder.Build();
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

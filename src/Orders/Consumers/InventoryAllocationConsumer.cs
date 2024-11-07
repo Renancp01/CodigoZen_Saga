@@ -12,7 +12,7 @@ public class InventoryAllocationConsumer : IConsumer<InventoryAllocationRequeste
         // Lógica para verificar disponibilidade no estoque
         bool isAvailable = true; // Simulação
 
-        throw new Exception();
+        // throw new Exception();
         if (isAvailable)
         {
             await context.Publish(new InventoryAllocationConfirmed

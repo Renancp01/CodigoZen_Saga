@@ -13,6 +13,7 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
     public OrderStateMachine()
     {
+        //Todo verificar para inserir StatusInicialSempre
         InstanceState(x => x.CurrentState);
 
         Event(() => OrderSubmittedEvent, x =>

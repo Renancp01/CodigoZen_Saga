@@ -11,8 +11,11 @@ public class KafkaOrderEventConsumer :IConsumer<KafkaOrderEvent>
     {
         _publishEndpoint = publishEndpoint;
     }
+    
     public async Task Consume(ConsumeContext<KafkaOrderEvent> context)
     {
+        // throw new Exception();
+        
         // Publicar o evento OrderSubmitted via RabbitMQ
         await _publishEndpoint.Publish(new OrderSubmitted
         {
