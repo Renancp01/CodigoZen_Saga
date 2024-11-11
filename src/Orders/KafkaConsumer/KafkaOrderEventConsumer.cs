@@ -1,27 +1,38 @@
 using MassTransit;
 using Orders.Contracts.Order;
+using Orders.Domain;
 using Orders.Models;
+using Orders.Services;
 
-namespace Orders.KafkaConsumer;
-
-public class KafkaOrderEventConsumer :IConsumer<KafkaOrderEvent>
+namespace Orders.KafkaConsumer
 {
-    private readonly IPublishEndpoint _publishEndpoint;
-    public KafkaOrderEventConsumer(IPublishEndpoint publishEndpoint)
+    public class KafkaOrderEventConsumer : IConsumer<KafkaOrderEvent>
     {
-        _publishEndpoint = publishEndpoint;
-    }
-    
-    public async Task Consume(ConsumeContext<KafkaOrderEvent> context)
-    {
-        // throw new Exception();
-        
-        // Publicar o evento OrderSubmitted via RabbitMQ
-        await _publishEndpoint.Publish(new OrderSubmitted
+        private readonly IPublishEndpoint _publishEndpoint;
+
+        public KafkaOrderEventConsumer(IPublishEndpoint publishEndpoint)
         {
-            OrderId = context.Message.OrderId,
-            CustomerNumber = context.Message.CustomerNumber
-            // Outros detalhes do pedido
-        });
+            _publishEndpoint = publishEndpoint;
+        
+        }
+
+        public async Task Consume(ConsumeContext<KafkaOrderEvent> context)
+        {
+            MongoGlobalConfig.Configure();
+            
+            var domainEvent = new ReceivedOrderEvent(context.Message);
+
+            var eventService = new EventService();
+
+            eventService.AddEvent(domainEvent);
+
+            // Publicar o evento OrderSubmitted via RabbitMQ
+            await _publishEndpoint.Publish(new OrderSubmitted
+            {
+                OrderId = context.Message.OrderId,
+                CustomerNumber = context.Message.CustomerNumber
+                // Outros detalhes do pedido
+            });
+        }
     }
 }

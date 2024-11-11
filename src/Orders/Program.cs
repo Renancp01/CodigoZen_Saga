@@ -59,34 +59,21 @@ public class Program
 
             x.AddRider(rider =>
             {
-                x.AddConsumer<KafkaOrderEventConsumer>(config =>
-                {
-                    config.UseMessageRetry(r =>
-                    {
-                        r.Interval(3, TimeSpan.FromSeconds(5)); // 3 tentativas com intervalo de 5 segundos entre elas
-                    });
-                });
+                rider.AddConsumer<Orders.KafkaConsumer.KafkaOrderEventConsumer>();
 
                 rider.UsingKafka((context, k) =>
                 {
                     k.Host("192.168.1.12:9092", _ => { });
 
                     k.SecurityProtocol = SecurityProtocol.Plaintext;
-                    k.TopicEndpoint<KafkaOrderEvent>("create-order", "order-group",
+                    k.TopicEndpoint<Orders.Models.KafkaOrderEvent>("create-order", "order-group",
                         e =>
                         {
-                            // Obtém o IMongoClient do contexto de dependências
-                            var mongoClient = context.GetRequiredService<IMongoClient>();
-
-                            // Cria a instância do filtro
-                            var inboxFilter = new MongoDbInboxFilter(mongoClient, "inbox_database", "inbox_state");
-                            // e.UseConsumeFilter(inboxFilter, context);
-
-                            
-                            
+                          
+                           
+                            e.ConfigureConsumer<Orders.KafkaConsumer.KafkaOrderEventConsumer>(context);
                             e.AutoOffsetReset = AutoOffsetReset.Earliest;
                             e.CreateIfMissing();
-                            e.ConfigureConsumer<KafkaOrderEventConsumer>(context);
                         });
                 });
             });
